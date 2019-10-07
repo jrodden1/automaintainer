@@ -7,7 +7,6 @@ class VehiclesController < ApplicationController
   end
 
   def create
-    binding.pry
     vehicle = Vehicle.new(vehicle_params)
 
     if vehicle.save 
