@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+# No tests created yet
 RSpec.describe MaintEventsController, type: :controller do
 
   describe "GET #show" do
