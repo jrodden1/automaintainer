@@ -10,4 +10,7 @@ class VehiclesController < ApplicationController
 
   def update
   end
+
+private 
+
 end

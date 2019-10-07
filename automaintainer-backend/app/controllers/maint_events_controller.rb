@@ -7,4 +7,7 @@ class MaintEventsController < ApplicationController
 
   def update
   end
+
+private 
+
 end

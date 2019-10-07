@@ -1,3 +1,4 @@
+# MaintEvents Migration
 class CreateMaintEvents < ActiveRecord::Migration[5.2]
   def change
     create_table :maint_events do |t|

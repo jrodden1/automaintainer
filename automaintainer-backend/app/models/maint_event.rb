@@ -5,5 +5,5 @@ class MaintEvent < ApplicationRecord
    validates :event_type, presence: true
    validates :cost, presence: true, numericality: { greater_than_or_equal_to: 0.00 }
    validates :completed, presence: true
-   #comment is optional
+   #Comment is optional
 end
