@@ -30,8 +30,8 @@ class MaintEvent {
       
       const maintEventDetailsElem = newMaintEventLi.querySelector(".collapsible-body")
       maintEventDetailsElem.innerHTML = 
-         `<p>Mileage at time of Event: ${this.mileage}</p>
-         <p>Cost: $${this.cost}$</p>`
+         `<p>Mileage at time of Event: ${this.mileage} mi</p>
+         <p>Cost: $${this.cost}</p>`
 
       return newMaintEventLi
    }
