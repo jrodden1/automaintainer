@@ -21,15 +21,24 @@ class Vehicle {
    }
 
    static createVehicleElements(vehicleObjsArr) {
-      vehicleObjsArr.forEach(vehicleData => {
-         let newVehicleInst = new Vehicle(vehicleData)
-         newVehicleInst.renderVehicle()
-      });
+      if(vehicleObjsArr.length === 0) {
+         //select the fixed action button and make it pulse 
+         // put in some grey text that says to add a vehicle to get started 
+      } else {
+         vehicleObjsArr.forEach(vehicleData => {
+            let newVehicleInst = new Vehicle(vehicleData)
+            newVehicleInst.renderVehicle()
+         });
+      }
+      //Enables Materialize Collapsible, Dropdown, Modal, floatingActionButton after creating all the elements
+      $('.collapsible').collapsible();
+      $(".dropdown-trigger").dropdown({ hover: false});
+      $('.fixed-action-btn').floatingActionButton({ hoverEnabled: false});
+      $('.modal').modal();
    }
 
    renderVehicle() {
       const vehicleElement = this.createVehicleElement()
-      debugger
       vehicleListUl.appendChild(vehicleElement)
    }
 
@@ -41,23 +50,19 @@ class Vehicle {
          <div class="collapsible-body"></div>`
       
       const vehicleDetailsElem = newVehicleElement.querySelector(".collapsible-body")
-      // should be able to abstract the work that is done if the attribute is true into its own function to DRY this up
-      if(this.owner) {
-         dataAppender("Owner", this.owner)
-      }
 
-      if(this.vin) {
-         dataAppender("VIN", this.vin)
-      }
+      this.owner ? dataAppender("Owner", this.owner) : console.log("No Owner Specified")
+      this.vin ? dataAppender("VIN", this.vin) : console.log("No VIN Specified")
       dataAppender("Color", this.color)
       // can use data appender to add the total cost of all the maintenance items here if I have time
       dataAppender("Maintenance Events")
       
       //need to then create up a UL for the maintenance events list for vehicle X then add LI's for each one
-
       const maintEventsUl = document.createElement("ul")
-      debugger
+      maintEventsUl.setAttribute("id", `data-events-for-vehicle-${this.id}`)
+      maintEventsUl.className = "collapsible popout"
 
+      MaintEvent.createMaintEventElements(this.maintEvents, maintEventsUl)
 
       vehicleDetailsElem.appendChild(maintEventsUl)
 
@@ -66,10 +71,7 @@ class Vehicle {
          dataElem.textContent = `${descriptionStr}: ${data}`
          vehicleDetailsElem.appendChild(dataElem)
       }
+
       return newVehicleElement
-      
-      //use "this" to get all the attributes I need to create the HTML and place the attributes in there. 
-      // this fn should also call maint event create card and append it to the HTML created in the above line
-      //returns the card html object
    }
 }
