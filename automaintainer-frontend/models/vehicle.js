@@ -55,23 +55,33 @@ class Vehicle {
       this.vin ? dataAppender("VIN", this.vin) : console.log("No VIN Specified")
       dataAppender("Color", this.color)
       // can use data appender to add the total cost of all the maintenance items here if I have time
-      dataAppender("Maintenance Events")
-      
-      //need to then create up a UL for the maintenance events list for vehicle X then add LI's for each one
-      const maintEventsUl = document.createElement("ul")
-      maintEventsUl.setAttribute("id", `data-events-for-vehicle-${this.id}`)
-      maintEventsUl.className = "collapsible popout"
-
-      MaintEvent.createMaintEventElements(this.maintEvents, maintEventsUl)
-
-      vehicleDetailsElem.appendChild(maintEventsUl)
+      if(this.maintEvents.length !== 0) {
+         //Adds heading for maintenance events
+         dataAppender("Maintenance Events")
+         
+         //need to then create up a UL for the maintenance events list for vehicle X then add LI's for each one
+         const maintEventsUl = document.createElement("ul")
+         maintEventsUl.setAttribute("id", `data-events-for-vehicle-${this.id}`)
+         maintEventsUl.className = "collapsible popout"
+         
+         MaintEvent.createMaintEventElements(this.maintEvents, maintEventsUl)
+         vehicleDetailsElem.appendChild(maintEventsUl)
+      }
+   
+      //Create new Maintenance Event button
+      let newMaintEventButton = document.createElement("a")
+      newMaintEventButton.setAttribute("id", `new-veh-main-ev-btn-${this.id}`)
+      newMaintEventButton.className = "btn red modal-trigger"
+      newMaintEventButton.setAttribute("href", "#modal2")
+      newMaintEventButton.textContent = "Create New Maintenance Event"
+      vehicleDetailsElem.appendChild(newMaintEventButton)
 
       function dataAppender(descriptionStr, data = " ") {
          const dataElem = document.createElement("p")
          dataElem.textContent = `${descriptionStr}: ${data}`
          vehicleDetailsElem.appendChild(dataElem)
       }
-
+      
       return newVehicleElement
    }
 }
