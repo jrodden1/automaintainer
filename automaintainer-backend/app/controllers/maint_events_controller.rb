@@ -1,7 +1,6 @@
 class MaintEventsController < ApplicationController
   
   def create
-    binding.pry
     process_completed_date_param_to_date_obj
     maint_event = MaintEvent.new(maint_event_params)
 
