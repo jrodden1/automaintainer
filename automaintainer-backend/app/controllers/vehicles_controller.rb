@@ -12,7 +12,7 @@ class VehiclesController < ApplicationController
     if vehicle.save 
       render json: vehicle, status: 201
     else
-      render json: { message: "Error - Missing Data: #{vehicle.error.full_messages.join(", ")}" }, status: 400
+      render json: { message: "Error(s): #{vehicle.errors.full_messages.join(", ")}" }, status: 400
     end
 
   end
@@ -34,7 +34,7 @@ class VehiclesController < ApplicationController
       render json: vehicle, include: [:maint_events], status: 201
       #not sure I need to include maint_events on just updating the vehicle - REFACTOR
     else
-      render json: { message: "Error - Vehicle not found" }, status: 400
+      render json: { message: "Error(s): #{vehicle.errors.full_messages.join(", ")}" }, status: 400
     end
 
   end
