@@ -94,7 +94,8 @@
    <div id="modal2" class="modal">
       <div class="modal-content">
          <h4 class="center">Create New Maintenance Event</h4>
-         <form id="new-vehicle-form" method="post">
+         <form id="new-maintevent-form" method="post">
+            <input id="for-vehicle" type="hidden" name="vehicle-id" value="">
             <div class="row">
                <div class="col s6">
                   <div class="input-field">
@@ -120,7 +121,7 @@
                   <div class="input-field">
                      <!-- REFACTOR this should be number limited to 2 decimals -->
                      <label for="cost">Cost:</label>
-                     <input type="text" name="cost" id="cost" placeholder="Black">
+                     <input type="number" name="cost" id="cost" placeholder="1154.87" min="0.00" step=".01">
                   </div>
                </div>
             </div>
