@@ -118,6 +118,7 @@ class Vehicle {
       newMaintEventButton.className = "btn red modal-trigger"
       newMaintEventButton.setAttribute("href", "#modal2")
       newMaintEventButton.textContent = "Create New Maintenance Event"
+      newMaintEventButton.addEventListener("click", setVehicleIdOnNewMEForm)
       vehicleDetailsElem.appendChild(newMaintEventButton)
 
       function dataAppender(descriptionStr, data = " ", hidden = false, idAttributeStr = null) {
@@ -135,6 +136,12 @@ class Vehicle {
          return dataElem
       }
 
+      function setVehicleIdOnNewMEForm(event) {
+         const currentVehicleId = this.parentElement.parentElement.getAttribute("id").split("data-vehicle-")[1]
+         const hiddenVehicleId = document.querySelector("#for-vehicle")
+         hiddenVehicleId.value = currentVehicleId
+      }
+      
       return newVehicleElement
    }
 }
