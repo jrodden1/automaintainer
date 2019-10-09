@@ -103,12 +103,12 @@ class Vehicle {
       maintEventsUl.setAttribute("id", `data-events-for-vehicle-${this.id}`)
       maintEventsUl.setAttribute("style", "display: none;")
       maintEventsUl.className = "collapsible popout"
-      if(this.maintEvents) {
+
+      if(maintEventsPresent(this.maintEvents)) {
          maintEventsP.setAttribute("style", "display: block;")
          maintEventsUl.setAttribute("style", "display: block;")
          MaintEvent.createMaintEventElements(this.maintEvents, maintEventsUl)
       }
-      
       vehicleDetailsElem.appendChild(maintEventsUl)
 
       //Create new Maintenance Event button
@@ -141,6 +141,14 @@ class Vehicle {
          hiddenVehicleId.value = currentVehicleId
       }
 
+      function maintEventsPresent(maintEventsArr) {
+         let eventsPresent = false 
+         if(maintEventsArr) {
+            maintEventsArr.length > 0 ? eventsPresent = true : console.log("No MaintEvents Found")
+         }
+         return eventsPresent 
+      }
+      
       return newVehicleElement
    }
 }
