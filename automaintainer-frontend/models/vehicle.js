@@ -103,7 +103,6 @@ class Vehicle {
       maintEventsUl.setAttribute("id", `data-events-for-vehicle-${this.id}`)
       maintEventsUl.setAttribute("style", "display: none;")
       maintEventsUl.className = "collapsible popout"
-      debugger
       if(this.maintEvents) {
          maintEventsP.setAttribute("style", "display: block;")
          maintEventsUl.setAttribute("style", "display: block;")
