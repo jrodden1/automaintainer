@@ -49,7 +49,6 @@ class Vehicle {
          .then(newVehicleData => {
             let newVehicleInst = new Vehicle(newVehicleData)
             newVehicleInst.renderVehicle()
-            return console.log("New Vehicle Rendered Successfully")
          })
          .catch(error => console.log(error))
    }
@@ -79,6 +78,7 @@ class Vehicle {
    }
 
    renderVehicle() {
+      const vehicleListUl = document.querySelector("#vehicle-list")
       const vehicleElement = this.createVehicleElement()
       vehicleListUl.appendChild(vehicleElement)
    }
@@ -103,8 +103,8 @@ class Vehicle {
       maintEventsUl.setAttribute("id", `data-events-for-vehicle-${this.id}`)
       maintEventsUl.setAttribute("style", "display: none;")
       maintEventsUl.className = "collapsible popout"
-      
-      if(this.maintEvents.length !== 0) {
+      debugger
+      if(this.maintEvents) {
          maintEventsP.setAttribute("style", "display: block;")
          maintEventsUl.setAttribute("style", "display: block;")
          MaintEvent.createMaintEventElements(this.maintEvents, maintEventsUl)
@@ -141,7 +141,7 @@ class Vehicle {
          const hiddenVehicleId = document.querySelector("#for-vehicle")
          hiddenVehicleId.value = currentVehicleId
       }
-      
+
       return newVehicleElement
    }
 }

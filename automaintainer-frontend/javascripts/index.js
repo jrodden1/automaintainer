@@ -1,5 +1,4 @@
 //Globals 
-const vehicleListUl = document.querySelector("#vehicle-list")
 const newVehicleForm = document.querySelector("#new-vehicle-form")
 const newMaintEventForm = document.querySelector("#new-maintevent-form")
 
