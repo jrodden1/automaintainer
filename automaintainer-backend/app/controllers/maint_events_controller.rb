@@ -4,9 +4,9 @@ class MaintEventsController < ApplicationController
     maint_event = MaintEvent.new(maint_event_params)
 
     if maint_event.save 
-      render json: maint_event
+      render json: maint_event, status: 201
     else
-      render json: { message: "Error(s): #{maint_event.error.full_messages.join(", ")}" }
+      render json: { message: "Error(s): #{maint_event.error.full_messages.join(", ")}" }, status: 400
     end
 
   end
@@ -15,9 +15,9 @@ class MaintEventsController < ApplicationController
     maint_event = set_maint_event
 
     if maint_event
-      render json: maint_event, include: [:maint_events]
+      render json: maint_event, include: [:maint_events], status: 201
     else
-      render json: { message: "Error - MaintEvent not found" }
+      render json: { message: "Error - MaintEvent not found" }, status: 400
     end
 
   end
@@ -26,10 +26,10 @@ class MaintEventsController < ApplicationController
     maint_event = set_maint_event
     
     if maint_event.update(maint_event_params)
-      render json: maint_event
+      render json: maint_event, status: 201
       #not sure I need to include maint_events on just updating the maint_event - REFACTOR
     else
-      render json: { message: "Error(s): #{maint_event.error.full_messages.join(", ")}" }
+      render json: { message: "Error(s): #{maint_event.error.full_messages.join(", ")}" }, status: 400
     end
 
   end
