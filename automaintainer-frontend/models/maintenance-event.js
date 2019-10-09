@@ -20,6 +20,69 @@ class MaintEvent {
       })
    }
 
+   static createNewMaintEvent(event) {
+      event.preventDefault()
+     
+
+      const mileage = event.currentTarget.querySelector("#mileage")
+      const completed = event.currentTarget.querySelector("#completed")
+      const eventType = event.currentTarget.querySelector("#event-type")
+      const cost = event.currentTarget.querySelector("#cost")
+      const comment = event.currentTarget.querySelector("#comment")
+      const vehicleId = event.currentTarget.querySelector("#for-vehicle")
+      
+      const newMaintEventObject = {
+         maint_event: {
+            mileage: mileage.value,
+            completed: completed.value,
+            event_type: eventType.value,
+            cost: cost.value,
+            comment: comment.value,
+            vehicle_id: vehicleId.value
+         }
+      }
+
+      const postOptionsObj = {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+         },
+         body: JSON.stringify(newMaintEventObject)
+      }
+      
+      fetch("http://localhost:3000/maint_events", postOptionsObj)
+         .then(resp => resp.json())
+         .then(newMaintEventData => MaintEvent.processNewMaintEventData(newMaintEventData))
+         .catch(error => console.log(error))
+      debugger
+      clearNewMaintForm()
+
+      function clearNewMaintForm() {
+         mileage.value = ""
+         completed.value = ""
+         eventType.value = ""
+         cost.value = ""
+         comment.value = ""
+         vehicleId.value = ""
+      }
+   }
+
+   static processNewMaintEventData(newMaintEventData) {  
+      let newMaintEventInst = new MaintEvent(newMaintEventData)
+      let newMaintEventElem = newMaintEventInst.createMaintEvent()
+      let vehicleMaintEventsUl = document.querySelector(`#data-events-for-vehicle-${newMaintEventInst.vehicleId}`)
+      const maintEventsP = document.querySelector(`#me-header-for-vehicle-${newMaintEventInst.vehicleId}`)
+      debugger
+      if(maintEventsP.getAttribute("style") === "display: none;") {
+         maintEventsP.setAttribute("style", "display: block;")
+         vehicleMaintEventsUl.setAttribute("style", "display: block;")
+      }  
+      vehicleMaintEventsUl.appendChild(newMaintEventElem)
+      console.log(`New MaintEvent "${newMaintEventInst.eventType}" appended to Vehicle ID: ${newMaintEventInst.vehicleId}`)
+   }
+
+
    createMaintEvent() {
       const newMaintEventLi = document.createElement("li")
       newMaintEventLi.setAttribute("id", `maint-event-${this.id}`)
