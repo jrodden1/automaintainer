@@ -5,6 +5,7 @@ class MaintEvent {
       this.mileage = data.mileage
       this.eventType = data.event_type
       this.cost = data.cost
+      this.comment = data.comment
       this.vehicleId = data.vehicle_id
       MaintEvent.all.push(this)
    }
@@ -95,7 +96,8 @@ class MaintEvent {
       const maintEventDetailsElem = newMaintEventLi.querySelector(".collapsible-body")
       maintEventDetailsElem.innerHTML = 
          `<p>Mileage at time of Event: ${this.mileage} mi</p>
-         <p>Cost: $${this.cost}</p>`
+         <p>Cost: $${this.cost}</p>
+         <p>Comment: ${this.comment}</p>`
 
       return newMaintEventLi
    }
