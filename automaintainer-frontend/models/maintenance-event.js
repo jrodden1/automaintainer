@@ -55,8 +55,10 @@ class MaintEvent {
          .then(resp => resp.json())
          .then(newMaintEventData => MaintEvent.processNewMaintEventData(newMaintEventData))
          .catch(error => console.log(error))
-      debugger
+      
       clearNewMaintForm()
+      //Gets a new collection of all the collapsibles including the one just created
+      $('.collapsible').collapsible();
 
       function clearNewMaintForm() {
          mileage.value = ""
@@ -73,7 +75,6 @@ class MaintEvent {
       let newMaintEventElem = newMaintEventInst.createMaintEvent()
       let vehicleMaintEventsUl = document.querySelector(`#data-events-for-vehicle-${newMaintEventInst.vehicleId}`)
       const maintEventsP = document.querySelector(`#me-header-for-vehicle-${newMaintEventInst.vehicleId}`)
-      debugger
       if(maintEventsP.getAttribute("style") === "display: none;") {
          maintEventsP.setAttribute("style", "display: block;")
          vehicleMaintEventsUl.setAttribute("style", "display: block;")
