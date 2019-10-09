@@ -13,6 +13,48 @@ class Vehicle {
    
    static all = []
 
+   static createNewVehicle(event) {
+      event.prevetDefault = true
+      debugger
+
+      const year = event.currentTarget.querySelector("#year").value
+      const make = event.currentTarget.querySelector("#make").value
+      const model = event.currentTarget.querySelector("#model").value
+      const color = event.currentTarget.querySelector("#color").value
+      const owner = event.currentTarget.querySelector("#owner").value
+      const vin = event.currentTarget.querySelector("#vin").value
+      
+      const newVehicleObject = {
+         vehicle: {
+            year: year,
+            make: make,
+            model: model,
+            color: color,
+            owner: owner,
+            vin: vin
+         }
+      }
+
+      const postOptionsObj = {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+         },
+         body: JSON.stringify(newVehicleObject)
+      }
+      
+      //Need to verify this is working correctly - REFACTOR
+      fetch("http://localhost:3000/vehicles", postOptionsObj)
+         .then(resp => resp.json())
+         .then(newVehicleData => {
+            let newVehicleInst = new Vehicle(newVehicleData)
+            newVehicleInst.renderVehicle()
+            return console.log("New Vehicle Rendered Successfully")
+         })
+         .catch(error => console.log(error))
+   }
+
    static get displayAllVehicles() {
       fetch("http://localhost:3000" + "/vehicles")
          .then(resp => resp.json())
