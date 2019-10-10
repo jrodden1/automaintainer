@@ -7,7 +7,7 @@ class MaintEventsController < ApplicationController
     if maint_event.save 
       render json: maint_event, status: 201
     else
-      render json: { message: "Error(s): #{maint_event.errors.full_messages.join(", ")}" }, status: 400
+      render json: { message: "Error(s): #{maint_event.errors.full_messages}" }, status: 400
     end
 
   end
@@ -30,7 +30,7 @@ class MaintEventsController < ApplicationController
       render json: maint_event, status: 201
       #not sure I need to include maint_events on just updating the maint_event - REFACTOR
     else
-      render json: { message: "Error(s): #{maint_event.errors.full_messages.join(", ")}" }, status: 400
+      render json: { message: "Error(s): #{maint_event.errors.full_messages}" }, status: 400
     end
 
   end
@@ -42,7 +42,8 @@ private
   end
 
   def process_completed_date_param_to_date_obj
-    params[:maint_event][:completed] = Date.strptime(params[:maint_event][:completed], '%m/%d/%Y') 
+    #Refactor needed- need to grab the users time zone and stick it in the params and then concat it at the end of completed instead of hard coding to -07:00
+    params[:maint_event][:completed] = DateTime.strptime(params[:maint_event][:completed] + " -07:00", '%Y-%m-%d %z')
   end
   
   
