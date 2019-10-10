@@ -13,17 +13,20 @@ class Vehicle {
    
    static all = []
 
+   //AJAX call to backend to create a new Vehicle & render it to the DOM
    static createNewVehicle(event) {
+      //prevent submit button from doing its normal thing
       event.preventDefault()
 
-      //Refactor - this doesn't need to be here and it doesn't have to get it from the currentTarget either -- should be able to just get it from the dom
-      const year = event.currentTarget.querySelector("#year")
-      const make = event.currentTarget.querySelector("#make")
-      const model = event.currentTarget.querySelector("#model")
-      const color = event.currentTarget.querySelector("#color")
-      const owner = event.currentTarget.querySelector("#owner")
-      const vin = event.currentTarget.querySelector("#vin")
+      //select all my newVehicle input elements
+      const year = document.querySelector("#year")
+      const make = document.querySelector("#make")
+      const model = document.querySelector("#model")
+      const color = document.querySelector("#color")
+      const owner = document.querySelector("#owner")
+      const vin = document.querySelector("#vin")
       
+      //Create my new vehicle object from my input element values 
       const newVehicleObject = {
          vehicle: {
             year: year.value,
@@ -35,6 +38,7 @@ class Vehicle {
          }
       }
 
+      //create my POST options object for my fetch to the backend
       const postOptionsObj = {
          method: 'POST',
          headers: {
@@ -44,39 +48,36 @@ class Vehicle {
          body: JSON.stringify(newVehicleObject)
       }
 
+      //perform AJAX POST fetch for a new vehicle, create a new instance of the vehicle, render it, then close the new form modal and clear the form
       fetch("http://localhost:3000/vehicles", postOptionsObj)
          .then(resp => resp.json())
          .then(newVehicleData => {
             let newVehicleInst = new Vehicle(newVehicleData)
             newVehicleInst.renderVehicle()
             $('.modal').modal('close');
-            clearNewVehicleForm()
+            Vehicle.clearNewVehicleForm()
          })
          .catch(error => console.log(error))
-      //Function to clear out my vehicle creation form after successful creation of vehicle. 
-      function clearNewVehicleForm() {
-         year.value = ""
-         make.value = ""
-         model.value = ""
-         color.value = ""
-         owner.value = ""
-         vin.value = ""
-      }
    }
 
+   //Class method run on DOMContentLoaded - AJAX call to backend to get and render show all existing Vehicles
    static get displayAllVehicles() {
       fetch("http://localhost:3000" + "/vehicles")
          .then(resp => resp.json())
          .then(vehicles => Vehicle.createVehicleElements(vehicles))
+         //REFACTOR - need to see if I want to post this to the dom or just console log it...
          .catch(error => renderError(error))
    }
 
+   //Class method that will render all vehicle objects to the DOM OR if there are no vehicles (empty array), then show the helper callout with instructions
    static createVehicleElements(vehicleObjsArr) {
       if(vehicleObjsArr.length === 0) {
+         //show helper callout with instructions if no vehicles at all
          $('.tap-target').tapTarget('open')
       } else {
          //show the vehicle list <ul> since we have a vehicle now.
          document.querySelector("#vehicle-list").setAttribute("style", "display: block;")
+         //process through each vehicle object, create a vehicle instance, then render the vehicle. 
          vehicleObjsArr.forEach(vehicleData => {
             let newVehicleInst = new Vehicle(vehicleData)
             newVehicleInst.renderVehicle()
@@ -89,6 +90,7 @@ class Vehicle {
       $('.modal').modal();
    }
 
+   //creates the vehicle element, turns on the vehicleListUl and then appends that vehicle element to that UL
    renderVehicle() {
       const vehicleListUl = document.querySelector("#vehicle-list")
       const vehicleElement = this.createVehicleElement()
@@ -96,6 +98,7 @@ class Vehicle {
       vehicleListUl.appendChild(vehicleElement)
    }
 
+   //instance method that does the dirty work of making up the HTML element for a vehicle.
    createVehicleElement() {
       const newVehicleElement = document.createElement("li")
       newVehicleElement.setAttribute("id", `data-vehicle-${this.id}`)
@@ -104,35 +107,45 @@ class Vehicle {
          <div class="collapsible-body"></div>`
       
       const vehicleDetailsElem = newVehicleElement.querySelector(".collapsible-body")
-
+      //If I have optional owner and vin data, then display it, otherwise, just console log that there was no owner or vin
       this.owner ? dataAppender("Owner", this.owner) : console.log("No Owner Specified")
       this.vin ? dataAppender("VIN", this.vin) : console.log("No VIN Specified")
+      //create up color data p tag and append it to the vehicleDetailsElem
       dataAppender("Color", this.color)
+
       // can use data appender to add the total cost of all the maintenance items here if I have time
+      // not implementing in MVP for right now.
+
       //Adds heading for maintenance events
       const maintEventsP = dataAppender("Maintenance Events", " ", true, `me-header-for-vehicle-${this.id}`)
       //need to then create up a UL for the maintenance events list for vehicle X then add LI's for each one
       const maintEventsUl = document.createElement("ul")
       maintEventsUl.setAttribute("id", `data-events-for-vehicle-${this.id}`)
+      //initially turns off the maintEventsUl until its needed
       maintEventsUl.setAttribute("style", "display: none;")
       maintEventsUl.className = "collapsible popout"
 
+      //checks to see if I have any existing maint events for this vehicle, if so, turn on my maintevents P "header" and my maintEventsUl 
+      //then go to town creating up the individual maintEvents and append them to the maintEventsUl
       if(maintEventsPresent(this.maintEvents)) {
          maintEventsP.setAttribute("style", "display: block;")
          maintEventsUl.setAttribute("style", "display: block;")
          MaintEvent.createMaintEventElements(this.maintEvents, maintEventsUl)
       }
+      //After all that then append the maintEventsUl (even if hidden and empty at this point.)
       vehicleDetailsElem.appendChild(maintEventsUl)
 
-      //Create new Maintenance Event button
-      let newMaintEventButton = document.createElement("a")
+      //Create new Maintenance Event button and link it to the modal (so the modal will know which vehicle is asking for a new MaintEvent)
+      const newMaintEventButton = document.createElement("a")
       newMaintEventButton.setAttribute("id", `new-veh-main-ev-btn-${this.id}`)
       newMaintEventButton.className = "btn red modal-trigger"
       newMaintEventButton.setAttribute("href", "#modal2")
       newMaintEventButton.textContent = "Create New Maintenance Event"
       newMaintEventButton.addEventListener("click", setVehicleIdOnNewMEForm)
+      //finally add the newMaintEventButton to the VehicleDetails Area
       vehicleDetailsElem.appendChild(newMaintEventButton)
 
+      //function used to append P tag vehicle detail data to the vehicleDetailselement
       function dataAppender(descriptionStr, data = " ", hidden = false, idAttributeStr = null) {
          const dataElem = document.createElement("p")
          dataElem.textContent = `${descriptionStr}: ${data}`
@@ -147,13 +160,18 @@ class Vehicle {
          vehicleDetailsElem.appendChild(dataElem)
          return dataElem
       }
+      
+      //returns the newVehicleElement
+      return newVehicleElement
 
+      //Enables the newMaintEvent modal to know for which vehicle it should make up the MaintEvent
       function setVehicleIdOnNewMEForm(event) {
          const currentVehicleId = this.parentElement.parentElement.getAttribute("id").split("data-vehicle-")[1]
          const hiddenVehicleId = document.querySelector("#for-vehicle")
          hiddenVehicleId.value = currentVehicleId
       }
 
+      //Checks to see if the maintEventsArr has any events in it. 
       function maintEventsPresent(maintEventsArr) {
          let eventsPresent = false 
          if(maintEventsArr) {
@@ -161,10 +179,9 @@ class Vehicle {
          }
          return eventsPresent 
       }
-
-      return newVehicleElement
    }
 
+   //Class method used to clear out the newVehicleForm from data as well as class valid/invalid formatting
    static clearNewVehicleForm() {
       const yearInputField = document.querySelector("#year")
       const makeInputField = document.querySelector("#make")
