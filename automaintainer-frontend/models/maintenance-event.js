@@ -76,6 +76,8 @@ class MaintEvent {
       let newMaintEventElem = newMaintEventInst.createMaintEvent()
       let vehicleMaintEventsUl = document.querySelector(`#data-events-for-vehicle-${newMaintEventInst.vehicleId}`)
       const maintEventsP = document.querySelector(`#me-header-for-vehicle-${newMaintEventInst.vehicleId}`)
+      debugger
+      //Working on Getting it so that my Modal Form doesn't close until all the inputs are validated correctly -- removed modal-close from new maint event form already.  May need to put this back. 
       if(maintEventsP.getAttribute("style") === "display: none;") {
          maintEventsP.setAttribute("style", "display: block;")
          vehicleMaintEventsUl.setAttribute("style", "display: block;")

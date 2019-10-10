@@ -45,19 +45,19 @@
                <div class="col s4">
                   <div class="input-field">
                      <label for="number">Year:</label>
-                     <input type="number" name="year" id="year" min="1875" step="1" placeholder="">
+                     <input type="number" name="year" id="year" min="1875" step="1" placeholder="" required autofocus>
                   </div>
                </div>
                <div class="col s4">
                   <div class="input-field">
                      <label for="make">Make:</label>
-                     <input type="text" name="make" id="make" placeholder="Ford">
+                     <input type="text" name="make" id="make" placeholder="Ford" required>
                   </div>
                </div>
                <div class="col s4">
                   <div class="input-field">
                      <label for="model">Model:</label>
-                     <input type="text" name="model" id="model" placeholder="Model T">
+                     <input type="text" name="model" id="model" placeholder="Model T" required>
                   </div>
                </div>
             </div>
@@ -65,7 +65,7 @@
                <div class="col s3">
                   <div class="input-field">
                      <label for="color">Color:</label>
-                     <input type="text" name="color" id="color" placeholder="Black">
+                     <input type="text" name="color" id="color" placeholder="Black" required>
                   </div>
                </div>
                <div class="col s4">
@@ -100,13 +100,13 @@
                <div class="col s6">
                   <div class="input-field">
                      <label for="number">Mileage at Event: </label>
-                     <input type="number" name="mileage" id="mileage" min="1" max="5000000" step="1" placeholder="100000">
+                     <input class="validate" type="number" name="mileage" id="mileage" min="1" max="5000000" step="1" placeholder="100000" maxlength=7 required autofocus>
                   </div>
                </div>
                <div class="col s6">
                   <div class="input-field">
                      <label for="completed">Completed Date:</label>
-                     <input type="text" name="completed" id="completed" placeholder="10/15/2019">
+                     <input class="validate" type="date" name="completed" id="completed" min="1875-01-01"  placeholder="2019-05-09" required>
                   </div>
                </div>
             </div>
@@ -114,14 +114,13 @@
                <div class="col s6">
                   <div class="input-field">
                      <label for="event-type">Event Type:</label>
-                     <input type="text" name="event_type" id="event-type" placeholder="Transmission Rebuild">
+                     <input type="text" name="event_type" id="event-type" placeholder="Transmission Rebuild" required>
                   </div>
                </div>
                <div class="col s6">
                   <div class="input-field">
-                     <!-- REFACTOR this should be number limited to 2 decimals -->
                      <label for="cost">Cost:</label>
-                     <input type="number" name="cost" id="cost" placeholder="1154.87" min="0.00" step=".01">
+                     <input class="validate" onchange="(function limitDecimalsTwo(elem) {elem.value = parseFloat(elem.value).toFixed(2)})(this)" type="number" name="cost" id="cost" placeholder="1154.87" min="0.00" step=".01" pattern="\d+(\.\d{2})?" required>
                   </div>
                </div>
             </div>
@@ -133,7 +132,7 @@
                </div>   
                <div class="center">
                   <a href="#!" class="modal-close waves-effect waves-grey grey btn">Cancel</a>
-                  <button type="submit" class="modal-close btn waves-effect red darken-2">Create New Maintenance Event</button>
+                  <button type="submit" class="btn waves-effect red darken-2">Create New Maintenance Event</button>
                </div>
          </form>
       </div>
