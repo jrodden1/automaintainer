@@ -23,15 +23,15 @@ class MaintEvent {
 
    static createNewMaintEvent(event) {
       event.preventDefault()
-     
+      //Get all my inputs by their ids 
+      const mileage = document.querySelector("#mileage")
+      const completed = document.querySelector("#completed")
+      const eventType = document.querySelector("#event-type")
+      const cost = document.querySelector("#cost")
+      const comment = document.querySelector("#comment")
+      const vehicleId = document.querySelector("#for-vehicle")
 
-      const mileage = event.currentTarget.querySelector("#mileage")
-      const completed = event.currentTarget.querySelector("#completed")
-      const eventType = event.currentTarget.querySelector("#event-type")
-      const cost = event.currentTarget.querySelector("#cost")
-      const comment = event.currentTarget.querySelector("#comment")
-      const vehicleId = event.currentTarget.querySelector("#for-vehicle")
-
+      //Save my input's values into an object to get stringified
       const newMaintEventObject = {
          maint_event: {
             mileage: mileage.value,
@@ -42,7 +42,7 @@ class MaintEvent {
             vehicle_id: vehicleId.value
          }
       }
-
+      //Setup my fetch POST options object with my new Maint Event object
       const postOptionsObj = {
          method: 'POST',
          headers: {
@@ -52,36 +52,23 @@ class MaintEvent {
          body: JSON.stringify(newMaintEventObject)
       }
       
+      //AJAX call to backend to create new MaintEvent object
       fetch("http://localhost:3000/maint_events", postOptionsObj)
          .then(resp => resp.json())
          .then(newMaintEventData => {
             MaintEvent.processNewMaintEventData(newMaintEventData)
-            clearNewMaintForm()
+            MaintEvent.clearNewMaintEventForm()
             $('.collapsible').collapsible();
          })
-         .catch(error => console.log(error))
-      
-         function clearNewMaintForm() {
-            mileage.value = ""
-            completed.value = ""
-            eventType.value = ""
-            cost.value = ""
-            comment.value = ""
-            vehicleId.value = ""
-         }
-      
-      //Gets a new collection of all the collapsibles including the one just created
-      
-      
+         .catch(error => console.log(error))   
    }
 
    static processNewMaintEventData(newMaintEventData) {  
       let newMaintEventInst = new MaintEvent(newMaintEventData)
       let newMaintEventElem = newMaintEventInst.createMaintEvent()
-      let vehicleMaintEventsUl = document.querySelector(`#data-events-for-vehicle-${newMaintEventInst.vehicleId}`)
+      const vehicleMaintEventsUl = document.querySelector(`#data-events-for-vehicle-${newMaintEventInst.vehicleId}`)
       const maintEventsP = document.querySelector(`#me-header-for-vehicle-${newMaintEventInst.vehicleId}`)
       
-      //Working on Getting it so that my Modal Form doesn't close until all the inputs are validated correctly -- removed modal-close from new maint event form already.  May need to put this back. 
       if(maintEventsP.getAttribute("style") === "display: none;") {
          maintEventsP.setAttribute("style", "display: block;")
          vehicleMaintEventsUl.setAttribute("style", "display: block;")
