@@ -25,16 +25,23 @@
 
    <div class="container"><br>
       <div>
-         <ul id="vehicle-list" class="collapsible">
-
+         <ul id="vehicle-list" class="collapsible" style="display: none;">
+         
          </ul>
       </div>
    </div>
-   
+
    <div class="fixed-action-btn">
-      <a id="new-vehicle-btn" class="btn-floating btn-large red modal-trigger" href="#modal1"">
+      <a id="new-vehicle-btn" class="btn-floating btn-large red darken-2 modal-trigger" href="#modal1"">
          <i class="large material-icons">add</i>
       </a>
+   </div>
+   <div class="tap-target red darken-2" data-target="new-vehicle-btn">
+      <div class="tap-target-content white-text">
+         <h5 class="center">Welcome to <br> Auto Maintainer</h5><br>
+         <p>With Auto Maintainer, you can track your vehicles and what maintenance has been peformed on them!</p>
+         <p>To get started, Click here to create a new vehicle!</p>
+      </div>
    </div>
    
    <div id="modal1" class="modal bottom-sheet">
@@ -84,7 +91,7 @@
                </div>
             </div>
                <div class="center">
-                  <a href="#!" class="modal-close waves-effect waves-grey grey btn">Cancel</a>
+                  <a id="cancel-new-vehicle" href="#!" class="modal-close waves-effect waves-grey grey btn">Cancel</a>
                   <button type="submit" class="btn waves-effect red darken-2">Create New Vehicle</button>
                </div>
          </form>
@@ -131,7 +138,7 @@
                   </div>
                </div>   
                <div class="center">
-                  <a href="#!" class="modal-close waves-effect waves-grey grey btn">Cancel</a>
+                  <a id="cancel-new-maint-event" href="#!" class="modal-close waves-effect waves-grey grey btn">Cancel</a>
                   <button type="submit" class="btn waves-effect red darken-2">Create New Maintenance Event</button>
                </div>
          </form>

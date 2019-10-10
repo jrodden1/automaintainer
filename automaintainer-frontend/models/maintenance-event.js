@@ -31,7 +31,7 @@ class MaintEvent {
       const cost = event.currentTarget.querySelector("#cost")
       const comment = event.currentTarget.querySelector("#comment")
       const vehicleId = event.currentTarget.querySelector("#for-vehicle")
-      
+
       const newMaintEventObject = {
          maint_event: {
             mileage: mileage.value,
@@ -93,7 +93,6 @@ class MaintEvent {
       
    }
 
-
    createMaintEvent() {
       const newMaintEventLi = document.createElement("li")
       newMaintEventLi.setAttribute("id", `maint-event-${this.id}`)
@@ -110,4 +109,39 @@ class MaintEvent {
 
       return newMaintEventLi
    }
+
+   static clearNewMaintEventForm() {
+      const mileageInputField = document.querySelector("#mileage")
+      const completedInputField = document.querySelector("#completed")
+      const eventTypeInputField = document.querySelector("#event-type")
+      const costInputField = document.querySelector("#cost")
+      const commentInputField = document.querySelector("#comment")
+      const vehicleIdInputField = document.querySelector("#for-vehicle")
+
+      mileageInputField.value = ""
+      mileageInputField.classList.remove("valid")
+      mileageInputField.classList.remove("invalid")
+
+      completedInputField.value = ""
+      completedInputField.classList.remove("valid")
+      completedInputField.classList.remove("invalid")
+      
+      eventTypeInputField.value = ""
+      eventTypeInputField.classList.remove("valid")
+      eventTypeInputField.classList.remove("invalid")
+      
+      costInputField.value = ""
+      costInputField.classList.remove("valid")
+      costInputField.classList.remove("invalid")
+      
+      commentInputField.value = ""
+      commentInputField.classList.remove("valid")
+      commentInputField.classList.remove("invalid")
+      
+      //since this field is hidden, just needs cleared 
+      vehicleIdInputField.value = ""
+      
+      console.log("New MaintEvent Form Cleared")
+   }
+
 }

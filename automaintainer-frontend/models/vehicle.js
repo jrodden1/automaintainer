@@ -16,6 +16,7 @@ class Vehicle {
    static createNewVehicle(event) {
       event.preventDefault()
 
+      //Refactor - this doesn't need to be here and it doesn't have to get it from the currentTarget either -- should be able to just get it from the dom
       const year = event.currentTarget.querySelector("#year")
       const make = event.currentTarget.querySelector("#make")
       const model = event.currentTarget.querySelector("#model")
@@ -73,9 +74,10 @@ class Vehicle {
 
    static createVehicleElements(vehicleObjsArr) {
       if(vehicleObjsArr.length === 0) {
-         //select the fixed action button and make it pulse 
-         // put in some grey text that says to add a vehicle to get started 
+         $('.tap-target').tapTarget('open')
       } else {
+         //show the vehicle list <ul> since we have a vehicle now.
+         document.querySelector("#vehicle-list").setAttribute("style", "display: block;")
          vehicleObjsArr.forEach(vehicleData => {
             let newVehicleInst = new Vehicle(vehicleData)
             newVehicleInst.renderVehicle()
@@ -161,5 +163,39 @@ class Vehicle {
       }
 
       return newVehicleElement
+   }
+
+   static clearNewVehicleForm() {
+      const yearInputField = document.querySelector("#year")
+      const makeInputField = document.querySelector("#make")
+      const modelInputField = document.querySelector("#model")
+      const colorInputField = document.querySelector("#color")
+      const ownerInputField = document.querySelector("#owner")
+      const vinInputField = document.querySelector("#vin")
+
+      yearInputField.value = ""
+      yearInputField.classList.remove("valid")
+      yearInputField.classList.remove("invalid")
+
+      makeInputField.value = ""
+      makeInputField.classList.remove("valid")
+      makeInputField.classList.remove("invalid")
+      
+      modelInputField.value = ""
+      modelInputField.classList.remove("valid")
+      modelInputField.classList.remove("invalid")
+      
+      colorInputField.value = ""
+      colorInputField.classList.remove("valid")
+      colorInputField.classList.remove("invalid")
+      
+      vinInputField.value = ""
+      vinInputField.classList.remove("valid")
+      vinInputField.classList.remove("invalid")
+      
+      //there are no validations on owner at the moment 
+      ownerInputField.value = ""
+      
+      console.log("New Vehicle Form Cleared")
    }
 }
