@@ -54,21 +54,25 @@ class MaintEvent {
       
       fetch("http://localhost:3000/maint_events", postOptionsObj)
          .then(resp => resp.json())
-         .then(newMaintEventData => MaintEvent.processNewMaintEventData(newMaintEventData))
+         .then(newMaintEventData => {
+            MaintEvent.processNewMaintEventData(newMaintEventData)
+            clearNewMaintForm()
+            $('.collapsible').collapsible();
+         })
          .catch(error => console.log(error))
       
-      clearNewMaintForm()
+         function clearNewMaintForm() {
+            mileage.value = ""
+            completed.value = ""
+            eventType.value = ""
+            cost.value = ""
+            comment.value = ""
+            vehicleId.value = ""
+         }
+      
       //Gets a new collection of all the collapsibles including the one just created
-      $('.collapsible').collapsible();
-
-      function clearNewMaintForm() {
-         mileage.value = ""
-         completed.value = ""
-         eventType.value = ""
-         cost.value = ""
-         comment.value = ""
-         vehicleId.value = ""
-      }
+      
+      
    }
 
    static processNewMaintEventData(newMaintEventData) {  
@@ -76,14 +80,17 @@ class MaintEvent {
       let newMaintEventElem = newMaintEventInst.createMaintEvent()
       let vehicleMaintEventsUl = document.querySelector(`#data-events-for-vehicle-${newMaintEventInst.vehicleId}`)
       const maintEventsP = document.querySelector(`#me-header-for-vehicle-${newMaintEventInst.vehicleId}`)
-      debugger
+      
       //Working on Getting it so that my Modal Form doesn't close until all the inputs are validated correctly -- removed modal-close from new maint event form already.  May need to put this back. 
       if(maintEventsP.getAttribute("style") === "display: none;") {
          maintEventsP.setAttribute("style", "display: block;")
          vehicleMaintEventsUl.setAttribute("style", "display: block;")
       }  
       vehicleMaintEventsUl.appendChild(newMaintEventElem)
+      //Close the modal after successfuly creation
+      $('.modal').modal('close');
       console.log(`New MaintEvent "${newMaintEventInst.eventType}" appended to Vehicle ID: ${newMaintEventInst.vehicleId}`)
+      
    }
 
 

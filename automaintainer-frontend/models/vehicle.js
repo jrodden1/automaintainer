@@ -16,21 +16,21 @@ class Vehicle {
    static createNewVehicle(event) {
       event.preventDefault()
 
-      const year = event.currentTarget.querySelector("#year").value
-      const make = event.currentTarget.querySelector("#make").value
-      const model = event.currentTarget.querySelector("#model").value
-      const color = event.currentTarget.querySelector("#color").value
-      const owner = event.currentTarget.querySelector("#owner").value
-      const vin = event.currentTarget.querySelector("#vin").value
+      const year = event.currentTarget.querySelector("#year")
+      const make = event.currentTarget.querySelector("#make")
+      const model = event.currentTarget.querySelector("#model")
+      const color = event.currentTarget.querySelector("#color")
+      const owner = event.currentTarget.querySelector("#owner")
+      const vin = event.currentTarget.querySelector("#vin")
       
       const newVehicleObject = {
          vehicle: {
-            year: year,
-            make: make,
-            model: model,
-            color: color,
-            owner: owner,
-            vin: vin
+            year: year.value,
+            make: make.value,
+            model: model.value,
+            color: color.value,
+            owner: owner.value,
+            vin: vin.value
          }
       }
 
@@ -42,15 +42,26 @@ class Vehicle {
          },
          body: JSON.stringify(newVehicleObject)
       }
-      
+
       //Need to verify this is working correctly - REFACTOR
       fetch("http://localhost:3000/vehicles", postOptionsObj)
          .then(resp => resp.json())
          .then(newVehicleData => {
             let newVehicleInst = new Vehicle(newVehicleData)
             newVehicleInst.renderVehicle()
+            $('.modal').modal('close');
+            clearNewVehicleForm()
          })
          .catch(error => console.log(error))
+      //Function to clear out my vehicle creation form after successful creation of vehicle. 
+      function clearNewVehicleForm() {
+         year.value = ""
+         make.value = ""
+         model.value = ""
+         color.value = ""
+         owner.value = ""
+         vin.value = ""
+      }
    }
 
    static get displayAllVehicles() {
@@ -148,7 +159,7 @@ class Vehicle {
          }
          return eventsPresent 
       }
-      
+
       return newVehicleElement
    }
 }
