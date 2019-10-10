@@ -45,19 +45,19 @@
                <div class="col s4">
                   <div class="input-field">
                      <label for="number">Year:</label>
-                     <input type="number" name="year" id="year" min="1875" step="1" placeholder="" required autofocus>
+                     <input class="validate" type="number" name="year" id="year" min="1875" step="1" placeholder="" required autofocus>
                   </div>
                </div>
                <div class="col s4">
                   <div class="input-field">
                      <label for="make">Make:</label>
-                     <input type="text" name="make" id="make" placeholder="Ford" required>
+                     <input class="validate" type="text" name="make" id="make" placeholder="Ford" required>
                   </div>
                </div>
                <div class="col s4">
                   <div class="input-field">
                      <label for="model">Model:</label>
-                     <input type="text" name="model" id="model" placeholder="Model T" required>
+                     <input class="validate" type="text" name="model" id="model" placeholder="Model T" required>
                   </div>
                </div>
             </div>
@@ -65,7 +65,7 @@
                <div class="col s3">
                   <div class="input-field">
                      <label for="color">Color:</label>
-                     <input type="text" name="color" id="color" placeholder="Black" required>
+                     <input class="validate" type="text" name="color" id="color" placeholder="Black" required>
                   </div>
                </div>
                <div class="col s4">
@@ -78,8 +78,8 @@
                <div class="col s5">
                   <div class="input-field">
                      <label for="vin">VIN:</label>
-                     <input type="text" name="vin" id="vin" placeholder="1F4PE18F227292225">
-                     <span class="helper-text" data-error="wrong" data-success="right">*Optional</span>
+                     <input class="validate" oninput="(function(elem){elem.value = elem.value.toUpperCase()})(this)" type="text" name="vin" id="vin" placeholder="1F4PE18F227292225" maxlength=17 pattern="[\d\w]+">
+                     <span class="helper-text" data-error="Must only contain numbers and letters" data-success="">*Optional</span>
                   </div>
                </div>
             </div>
@@ -114,7 +114,7 @@
                <div class="col s6">
                   <div class="input-field">
                      <label for="event-type">Event Type:</label>
-                     <input type="text" name="event_type" id="event-type" placeholder="Transmission Rebuild" required>
+                     <input class="validate" type="text" name="event_type" id="event-type" placeholder="Transmission Rebuild" minlength=3 required>
                   </div>
                </div>
                <div class="col s6">
