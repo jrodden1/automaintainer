@@ -44,7 +44,6 @@ class Vehicle {
          body: JSON.stringify(newVehicleObject)
       }
 
-      //Need to verify this is working correctly - REFACTOR
       fetch("http://localhost:3000/vehicles", postOptionsObj)
          .then(resp => resp.json())
          .then(newVehicleData => {
@@ -93,6 +92,7 @@ class Vehicle {
    renderVehicle() {
       const vehicleListUl = document.querySelector("#vehicle-list")
       const vehicleElement = this.createVehicleElement()
+      vehicleListUl.setAttribute("style", "display: block;")
       vehicleListUl.appendChild(vehicleElement)
    }
 
