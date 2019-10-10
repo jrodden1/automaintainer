@@ -13,7 +13,8 @@ class MaintEvent {
    static all = []
 
    static createMaintEventElements(maintEventObjsArr, targetUlNode) {
-      //REFACTOR - should sort maintEventObjsArr by completed date ascending
+      //Possible Refactor: sort maintEventObjsArr by completed date ascending - not part of MVP
+      //this class method enables the creation of maintEventLi's and appends them to the targetUlNode
       maintEventObjsArr.forEach(maintEventData => {
          const newMaintEventInst = new MaintEvent(maintEventData)
          const newMaintEventElem = newMaintEventInst.createMaintEvent()
@@ -56,8 +57,10 @@ class MaintEvent {
       fetch("http://localhost:3000/maint_events", postOptionsObj)
          .then(resp => resp.json())
          .then(newMaintEventData => {
+            //Process my new maintEventData & clear my new Maint Event form
             MaintEvent.processNewMaintEventData(newMaintEventData)
             MaintEvent.clearNewMaintEventForm()
+            //Enables my new Materialize collapsible object (the new Maint Event) to work
             $('.collapsible').collapsible();
          })
          .catch(error => console.log(error))   
@@ -66,37 +69,25 @@ class MaintEvent {
    static processNewMaintEventData(newMaintEventData) {  
       let newMaintEventInst = new MaintEvent(newMaintEventData)
       let newMaintEventElem = newMaintEventInst.createMaintEvent()
+      //Select the appropriate vehicle that this MaintEvent belongs to and its "header" p tag
       const vehicleMaintEventsUl = document.querySelector(`#data-events-for-vehicle-${newMaintEventInst.vehicleId}`)
       const maintEventsP = document.querySelector(`#me-header-for-vehicle-${newMaintEventInst.vehicleId}`)
       
+      //If this is the first Maint Event, this logic checks to see if the MaintEventsP header is hidden, if so, turn it back on to show and turn on this specific vehicle's MaintEventsUl too
       if(maintEventsP.getAttribute("style") === "display: none;") {
          maintEventsP.setAttribute("style", "display: block;")
          vehicleMaintEventsUl.setAttribute("style", "display: block;")
-      }  
+      }
+      //Append my new MaintEvent to this vehicle's maintEventsUl
       vehicleMaintEventsUl.appendChild(newMaintEventElem)
+
       //Close the modal after successfuly creation
       $('.modal').modal('close');
+      //Let the nerdy console users know that this was successful. ;) 
       console.log(`New MaintEvent "${newMaintEventInst.eventType}" appended to Vehicle ID: ${newMaintEventInst.vehicleId}`)
-      
    }
 
-   createMaintEvent() {
-      const newMaintEventLi = document.createElement("li")
-      newMaintEventLi.setAttribute("id", `maint-event-${this.id}`)
-
-      newMaintEventLi.innerHTML = 
-         `<div class="collapsible-header" tabindex="0"><i class="material-icons">build</i><strong>${this.eventType} - ${this.completed}</strong></div>
-         <div class="collapsible-body"></div>`
-      
-      const maintEventDetailsElem = newMaintEventLi.querySelector(".collapsible-body")
-      maintEventDetailsElem.innerHTML = 
-         `<p>Mileage at time of Event: ${this.mileage} mi</p>
-         <p>Cost: $${this.cost}</p>
-         <p>Comment: ${this.comment}</p>`
-
-      return newMaintEventLi
-   }
-
+   //This class method clears out the new Maint Event form as well as any input styling for valid/invalid -- makes it squeaky clean
    static clearNewMaintEventForm() {
       const mileageInputField = document.querySelector("#mileage")
       const completedInputField = document.querySelector("#completed")
@@ -104,11 +95,11 @@ class MaintEvent {
       const costInputField = document.querySelector("#cost")
       const commentInputField = document.querySelector("#comment")
       const vehicleIdInputField = document.querySelector("#for-vehicle")
-
+      
       mileageInputField.value = ""
       mileageInputField.classList.remove("valid")
       mileageInputField.classList.remove("invalid")
-
+      
       completedInputField.value = ""
       completedInputField.classList.remove("valid")
       completedInputField.classList.remove("invalid")
@@ -130,5 +121,23 @@ class MaintEvent {
       
       console.log("New MaintEvent Form Cleared")
    }
+   
+   //Creates a MaintEventLi and returns it
+   createMaintEvent() {
+      const newMaintEventLi = document.createElement("li")
+      newMaintEventLi.setAttribute("id", `maint-event-${this.id}`)
 
+      newMaintEventLi.innerHTML = 
+         `<div class="collapsible-header" tabindex="0"><i class="material-icons">build</i><strong>${this.eventType} - ${this.completed}</strong></div>
+         <div class="collapsible-body"></div>`
+      
+      const maintEventDetailsElem = newMaintEventLi.querySelector(".collapsible-body")
+      //REFACTOR: Add a IF statement here to see if there is a comment, if there is, make the innerHTML like what is below, else, make the innerHTML the same but minus the p tag for the comment.
+      maintEventDetailsElem.innerHTML = 
+         `<p>Mileage at time of Event: ${this.mileage} mi</p>
+         <p>Cost: $${this.cost}</p>
+         <p>Comment: ${this.comment}</p>`
+
+      return newMaintEventLi
+   }
 }
