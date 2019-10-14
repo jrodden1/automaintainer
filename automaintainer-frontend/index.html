@@ -10,7 +10,21 @@
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
    <!-- Compiled and minified MaterializeCSS -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-   
+   <!-- Custom CSS Styles -->
+   <style>
+      #error-details {
+         display: inline;
+         border-radius: 15px;
+         padding: 10px; 
+       }
+
+       #toast-container {
+         top: 12% !important;
+         right: 30% !important;
+         bottom: 10%;
+         left: 30%;  
+       }
+   </style>
    <!--Let browser know website is optimized for mobile-->
    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
@@ -22,7 +36,12 @@
          <a class="brand-logo center"><i class="material-icons">build</i>Auto Maintainer</a>
       </div>
    </nav>
-
+   <!-- This #error-notice div is only used if the Alternate Method from displaying errors (from globals.js -> renderErrors()) is used-->
+   <div id="error-notice" class="center" style="display: none;">  
+      <br>
+      <p class="red white-text" id="error-details"></p>
+   </div>
+   
    <div class="container"><br>
       <div>
          <ul id="vehicle-list" class="collapsible" style="display: none;">

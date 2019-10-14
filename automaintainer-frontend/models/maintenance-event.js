@@ -63,7 +63,13 @@ class MaintEvent {
             //Enables my new Materialize collapsible object (the new Maint Event) to work
             $('.collapsible').collapsible();
          })
-         .catch(error => console.log(error))   
+         .catch(error => {
+            const errorObj = { 
+            error: error,
+            from: "Create New Maint Event Error"
+         }
+         renderError(errorObj)
+      })   
    }
 
    static processNewMaintEventData(newMaintEventData) {  

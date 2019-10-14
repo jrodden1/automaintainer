@@ -57,7 +57,13 @@ class Vehicle {
             $('.modal').modal('close');
             Vehicle.clearNewVehicleForm()
          })
-         .catch(error => console.log(error))
+         .catch(error => {
+            const errorObj = { 
+               error: error,
+               from: "Create New Vehicle Error"
+            }
+            renderError(errorObj)
+         })
    }
 
    //Class method run on DOMContentLoaded - AJAX call to backend to get and render show all existing Vehicles
@@ -66,7 +72,13 @@ class Vehicle {
          .then(resp => resp.json())
          .then(vehicles => Vehicle.createVehicleElements(vehicles))
          //REFACTOR - need to see if I want to post this to the dom or just console log it...
-         .catch(error => renderError(error))
+         .catch(error => {
+            const errorObj = { 
+               error: error,
+               from: "Render All Vehicles Error"
+            }
+            renderError(errorObj)
+         })
    }
 
    //Class method that will render all vehicle objects to the DOM OR if there are no vehicles (empty array), then show the helper callout with instructions
