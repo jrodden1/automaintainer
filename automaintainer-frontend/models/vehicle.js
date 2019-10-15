@@ -71,7 +71,6 @@ class Vehicle {
       fetch("http://localhost:3000" + "/vehicles")
          .then(resp => resp.json())
          .then(vehicles => Vehicle.createVehicleElements(vehicles))
-         //REFACTOR - need to see if I want to post this to the dom or just console log it...
          .catch(error => {
             const errorObj = { 
                error: error,

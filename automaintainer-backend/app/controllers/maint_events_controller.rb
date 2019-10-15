@@ -35,6 +35,17 @@ class MaintEventsController < ApplicationController
 
   end
 
+  def destroy
+    maint_event = set_maint_event 
+    maint_event_id = maint_event.id
+    # REFACTOR - Could add an if statement here to see if the event destroys successfully and alternative message if it doesn't for some reason
+    maint_event.destroy
+    render json: { 
+      message: "MaintEvent successfully destroyed",
+      id: maint_event_id
+    }
+  end
+
 private 
 
   def maint_event_params

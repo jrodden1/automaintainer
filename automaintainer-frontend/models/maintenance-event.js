@@ -137,6 +137,12 @@ class MaintEvent {
          `<div class="collapsible-header" tabindex="0"><i class="material-icons">build</i><strong>${this.eventType} - ${this.completed}</strong></div>
          <div class="collapsible-body"></div>`
       
+      const deleteMEButton = document.createElement("button")
+      deleteMEButton.textContent = "Delete Event"
+      deleteMEButton.className = "btn red darken-2"
+      deleteMEButton.addEventListener("click", deleteMaintEvent)
+      newMaintEventLi.appendChild(deleteMEButton)
+
       const maintEventDetailsElem = newMaintEventLi.querySelector(".collapsible-body")
       //REFACTOR: Add a IF statement here to see if there is a comment, if there is, make the innerHTML like what is below, else, make the innerHTML the same but minus the p tag for the comment.
       maintEventDetailsElem.innerHTML = 
@@ -145,5 +151,29 @@ class MaintEvent {
          <p>Comment: ${this.comment}</p>`
 
       return newMaintEventLi
+
+      function deleteMaintEvent(event) {
+         const maintEventId = event.currentTarget.parentElement.getAttribute("id").split("maint-event-")[1]
+
+         const deleteOptionsObj = {
+            method: 'DELETE',
+            headers: {
+               'Content-Type': 'application/json',
+               'Accept': 'application/json'
+            },
+         }
+            
+         fetch(`http://localhost:3000/maint_events/${maintEventId}`, deleteOptionsObj)
+            .then(resp => resp.json())
+            .then(item => {
+               const maintEventLi = document.querySelector(`#maint-event-${item.id}`)
+               maintEventLi.remove()
+               console.log(item)
+            })
+            .catch(error => {
+               console.log(error)
+            })
+
+      }
    }
 }
