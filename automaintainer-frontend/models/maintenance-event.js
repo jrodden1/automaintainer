@@ -139,9 +139,11 @@ class MaintEvent {
       
       const maintEventDetailsElem = newMaintEventLi.querySelector(".collapsible-body")
       //REFACTOR: Add a IF statement here to see if there is a comment, if there is, make the innerHTML like what is below, else, make the innerHTML the same but minus the p tag for the comment.
+      const formattedCost = parseFloat(this.cost).toFixed(2)
+      
       maintEventDetailsElem.innerHTML = 
       `<p>Mileage at time of Event: ${this.mileage} mi</p>
-      <p>Cost: $${this.cost}</p>
+      <p>Cost: $${formattedCost}</p>
       <p>Comment: ${this.comment}</p>`
 
       const deleteMEButton = document.createElement("button")
