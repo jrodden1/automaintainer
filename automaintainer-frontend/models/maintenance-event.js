@@ -65,11 +65,11 @@ class MaintEvent {
          })
          .catch(error => {
             const errorObj = { 
-            error: error,
-            from: "Create New Maint Event Error"
-         }
-         renderError(errorObj)
-      })   
+               error: error,
+               from: "Create New Maint Event Error"
+            }
+            renderError(errorObj)
+         })   
    }
 
    static processNewMaintEventData(newMaintEventData) {  
@@ -132,28 +132,29 @@ class MaintEvent {
    createMaintEvent() {
       const newMaintEventLi = document.createElement("li")
       newMaintEventLi.setAttribute("id", `maint-event-${this.id}`)
-
-      newMaintEventLi.innerHTML = 
-         `<div class="collapsible-header" tabindex="0"><i class="material-icons">build</i><strong>${this.eventType} - ${this.completed}</strong></div>
-         <div class="collapsible-body"></div>`
       
+      newMaintEventLi.innerHTML = 
+      `<div class="collapsible-header" tabindex="0"><i class="material-icons">build</i><strong>${this.eventType} - ${this.completed}</strong></div>
+      <div class="collapsible-body"></div>`
+      
+      const maintEventDetailsElem = newMaintEventLi.querySelector(".collapsible-body")
+      //REFACTOR: Add a IF statement here to see if there is a comment, if there is, make the innerHTML like what is below, else, make the innerHTML the same but minus the p tag for the comment.
+      maintEventDetailsElem.innerHTML = 
+      `<p>Mileage at time of Event: ${this.mileage} mi</p>
+      <p>Cost: $${this.cost}</p>
+      <p>Comment: ${this.comment}</p>`
+
       const deleteMEButton = document.createElement("button")
       deleteMEButton.textContent = "Delete Event"
       deleteMEButton.className = "btn red darken-2"
       deleteMEButton.addEventListener("click", deleteMaintEvent)
-      newMaintEventLi.appendChild(deleteMEButton)
 
-      const maintEventDetailsElem = newMaintEventLi.querySelector(".collapsible-body")
-      //REFACTOR: Add a IF statement here to see if there is a comment, if there is, make the innerHTML like what is below, else, make the innerHTML the same but minus the p tag for the comment.
-      maintEventDetailsElem.innerHTML = 
-         `<p>Mileage at time of Event: ${this.mileage} mi</p>
-         <p>Cost: $${this.cost}</p>
-         <p>Comment: ${this.comment}</p>`
-
+      maintEventDetailsElem.appendChild(deleteMEButton)
+      
       return newMaintEventLi
 
       function deleteMaintEvent(event) {
-         const maintEventId = event.currentTarget.parentElement.getAttribute("id").split("maint-event-")[1]
+         const maintEventId = event.currentTarget.parentElement.parentElement.getAttribute("id").split("maint-event-")[1]
 
          const deleteOptionsObj = {
             method: 'DELETE',
@@ -171,7 +172,11 @@ class MaintEvent {
                console.log(item)
             })
             .catch(error => {
-               console.log(error)
+               const errorObj = { 
+                  error: error,
+                  from: "Delete Maint Event Error"
+                  }
+               renderError(errorObj)
             })
 
       }
