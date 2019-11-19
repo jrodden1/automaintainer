@@ -149,7 +149,7 @@ class Vehicle {
       //Create new Maintenance Event button and link it to the modal (so the modal will know which vehicle is asking for a new MaintEvent)
       const newMaintEventButton = document.createElement("a")
       newMaintEventButton.setAttribute("id", `new-veh-main-ev-btn-${this.id}`)
-      newMaintEventButton.className = "btn red modal-trigger"
+      newMaintEventButton.className = "btn red darken-2 modal-trigger"
       newMaintEventButton.setAttribute("href", "#modal2")
       newMaintEventButton.textContent = "Create New Maintenance Event"
       newMaintEventButton.addEventListener("click", setVehicleIdOnNewMEForm)
